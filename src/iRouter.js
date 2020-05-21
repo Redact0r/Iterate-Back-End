@@ -30,7 +30,7 @@ iRouter
     res.status(201).json({ msg: "Saved!" });
   });
 
-iRouter.route("/myworks/:searchtitle").get((req, res, next) => {
+iRouter.route("/myworks/title/:searchtitle").get((req, res, next) => {
   const { searchtitle } = req.params;
   let worksByTitle = data.find((work) =>
     work.title.toLowerCase().includes(searchtitle.toLowerCase())
@@ -53,16 +53,17 @@ iRouter
 
     res.status(202).json({ msg: "Successfully deleted" });
   })
-  .put((req, res) => {
-    const { id, title, content, wordCount } = req.params;
-    const updatedObj = { id, title, content, wordCount };
+  .put(dataParser, (req, res) => {
+    const { id } = req.params;
+    const { title, content, wordCount } = req.body;
+    const updatedObj = { title, content, wordCount };
     let indexOfEntry = data.findIndex((work) => work.id === id);
     if (indexOfEntry === -1) {
       return res.status(404).json({ err: "Entry not found" });
     }
     data[indexOfEntry] = updatedObj;
 
-    res.status(201).json({ msg: "Entry successfully updated" });
+    res.status(201).json({ msg: "Update successful!" });
   });
 
 module.exports = iRouter;
