@@ -15,7 +15,6 @@ const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 app.use(cors());
 app.use(helmet());
 app.use(morgan(morganOption));
-
 app.use("/", iRouter);
 
 app.use(function errorMiddleWare(err, req, res, next) {

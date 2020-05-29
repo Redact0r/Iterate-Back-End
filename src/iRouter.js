@@ -9,10 +9,16 @@ const dataParser = express.json();
 iRouter
   .route("/myworks")
   .get((req, res, next) => {
-    res.json(data);
+    const knexInstance = req.app.get("db");
+    iService
+      .getAllWritings(knexInstance)
+      .then((works) => {
+        res.json(works);
+      })
+      .catch(next);
   })
-  .post(dataParser, (req, res) => {
-    const { title, content, wordCount } = req.body;
+  .post(dataParser, (req, res, next) => {
+    const { title, content, wordcount } = req.body;
     const id = uuid();
 
     if (!title) {
@@ -20,14 +26,20 @@ iRouter
     }
 
     const newWork = {
-      id,
-      title,
-      content,
-      wordCount,
+      id: id,
+      title: title,
+      content: content,
+      wordcount: wordcount,
     };
 
-    data.push(newWork);
-    res.status(201).json({ msg: "Saved!" });
+    console.log(newWork);
+
+    iService
+      .insertWork(req.app.get("db"), newWork)
+      .then((work) => {
+        res.status(201).json({ work });
+      })
+      .catch(next);
   });
 
 iRouter.route("/myworks/title/:searchtitle").get((req, res, next) => {
@@ -43,27 +55,21 @@ iRouter.route("/myworks/title/:searchtitle").get((req, res, next) => {
 
 iRouter
   .route("/myworks/id/:id")
-  .delete((req, res) => {
+  .delete((req, res, next) => {
     const { id } = req.params;
-    let delWorks = data.findIndex((work) => work.id === id);
-    if (delWorks === -1) {
-      return res.status(404).json({ err: "Not found" });
-    }
-    data.splice(delWorks, 1);
-
-    res.status(202).json({ msg: "Successfully deleted" });
+    iService
+      .deleteWork(req.app.get("db"), id)
+      .then(() => res.status(204).end())
+      .catch(next);
   })
-  .put(dataParser, (req, res) => {
+  .patch(dataParser, (req, res, next) => {
     const { id } = req.params;
-    const { title, content, wordCount } = req.body;
-    const updatedObj = { title, content, wordCount };
-    let indexOfEntry = data.findIndex((work) => work.id === id);
-    if (indexOfEntry === -1) {
-      return res.status(404).json({ err: "Entry not found" });
-    }
-    data[indexOfEntry] = updatedObj;
-
-    res.status(201).json({ msg: "Update successful!" });
+    const { title, content, wordcount } = req.body;
+    const updatedObj = { title: title, content: content, wordcount: wordcount };
+    iService
+      .updateWork(req.app.get("db"), id, updatedObj)
+      .then(() => res.status(201).end())
+      .catch(next);
   });
 
 module.exports = iRouter;
