@@ -1,6 +1,6 @@
 const iService = {
-  getAllWritings(db) {
-    return db("userworks").select("*");
+  getAllWritings(db, userid) {
+    return db("userworks").select("*").where({ userid });
   },
   insertWork(db, newWork) {
     return db

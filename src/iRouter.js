@@ -9,16 +9,17 @@ const dataParser = express.json();
 iRouter
   .route("/myworks")
   .get((req, res, next) => {
+    const { userid } = req.query;
     const knexInstance = req.app.get("db");
     iService
-      .getAllWritings(knexInstance)
+      .getAllWritings(knexInstance, userid)
       .then((works) => {
         res.json(works);
       })
       .catch(next);
   })
   .post(dataParser, (req, res, next) => {
-    const { title, content, wordcount } = req.body;
+    const { userid, title, content, wordcount } = req.body;
     const id = uuid();
 
     if (!title) {
@@ -30,6 +31,7 @@ iRouter
       title: title,
       content: content,
       wordcount: wordcount,
+      userid: userid,
     };
 
     console.log(newWork);

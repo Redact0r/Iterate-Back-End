@@ -4,7 +4,7 @@ const config = require("../config");
 
 const AuthService = {
   getUserWithUserName(db, user_name) {
-    return db("blogful_users").where({ user_name }).first();
+    return db("iterateusers").where({ user_name }).first();
   },
   comparePasswords(password, hash) {
     return bcrypt.compare(password, hash);
@@ -15,6 +15,9 @@ const AuthService = {
       expiresIn: config.JWT_EXPIRY,
       algorithm: "HS256",
     });
+  },
+  getUserId(db, user_name) {
+    return db("iterateusers").select("userid").where({ user_name }).first();
   },
   verifyJwt(token) {
     return jwt.verify(token, config.JWT_SECRET, {

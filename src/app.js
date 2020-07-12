@@ -5,6 +5,9 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 const iRouter = require("./iRouter");
+const usersRouter = require("../src/users/users-router");
+const authRouter = require("./auth/auth-router");
+const errorHandler = require("../src/middleware/error-handler");
 
 const { NODE_ENV } = require("./config");
 
@@ -16,6 +19,10 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan(morganOption));
 app.use("/", iRouter);
+app.use("/login", authRouter);
+app.use("/signup", usersRouter);
+
+app.use(errorHandler);
 
 app.use(function errorMiddleWare(err, req, res, next) {
   let response;

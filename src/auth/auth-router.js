@@ -5,7 +5,8 @@ const { requireAuth } = require("../middleware/jwt-auth");
 const authRouter = express.Router();
 const jsonBodyParser = express.json();
 
-authRouter.post("/login", jsonBodyParser, (req, res, next) => {
+authRouter.post("/", jsonBodyParser, (req, res, next) => {
+  const db = req.app.get("db");
   const { user_name, password } = req.body;
   const loginUser = { user_name, password };
 
@@ -14,8 +15,8 @@ authRouter.post("/login", jsonBodyParser, (req, res, next) => {
       return res.status(400).json({
         error: `Missing '${key}' in request body`,
       });
-
-  AuthService.getUserWithUserName(req.app.get("db"), loginUser.user_name)
+  // const userid = AuthService.getUserId(db, user_name);
+  AuthService.getUserWithUserName(db, loginUser.user_name)
     .then((dbUser) => {
       if (!dbUser)
         return res.status(400).json({
@@ -32,9 +33,10 @@ authRouter.post("/login", jsonBodyParser, (req, res, next) => {
           });
 
         const sub = dbUser.user_name;
-        const payload = { user_id: dbUser.id };
+        const payload = { userid: dbUser.userid };
         res.send({
           authToken: AuthService.createJwt(sub, payload),
+          userid: payload.userid,
         });
       });
     })
