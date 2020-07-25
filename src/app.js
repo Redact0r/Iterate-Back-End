@@ -7,6 +7,7 @@ const helmet = require("helmet");
 const iRouter = require("./iRouter");
 const usersRouter = require("../src/users/users-router");
 const authRouter = require("./auth/auth-router");
+const streakRouter = require("./streak/streak-router");
 const errorHandler = require("../src/middleware/error-handler");
 
 const { NODE_ENV } = require("./config");
@@ -21,6 +22,7 @@ app.use(morgan(morganOption));
 app.use("/", iRouter);
 app.use("/login", authRouter);
 app.use("/signup", usersRouter);
+app.use("/streak", streakRouter);
 
 app.use(errorHandler);
 
