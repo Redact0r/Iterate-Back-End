@@ -47,40 +47,39 @@ streakRouter.post("/check", jsonBodyParser, (req, res, next) => {
 
   async function handleStreakCheck() {
     const lastLogin = await StreakService.getLastSteakDate(db, id);
-    console.log(lastLogin);
     if (!lastLogin) {
-      StreakService.updateLastStreakDate(db, id, currentDate);
+      await StreakService.updateLastStreakDate(db, id, currentDate);
       return res.status(201).json({
         message: "Welcome to Iterate! Start typing and earn your first streak!",
       });
     }
     if (lastLogin) {
-      //one hour less than 24 to be generous to the user - rounding up from their last hour
-      const endOfNextDayHours = Math.abs(lastLogin.getHours() - 23);
+      //one hour more than 24 to be generous to the user - rounding up from their last hour
+      const endOfNextDayHours = Math.abs(lastLogin.getHours() - 25);
       //if you wrote at 5am on Tuesday, then your streak expires 5am Wednesday. Undesirable -- user would expect to have until 23:59 Wednesday. We add 24 hours from the hours rounded down from the remaining of the current day to adjust for this.
       const endOfNextDay = endOfNextDayHours + 24;
       //returns milliseconds, divided by 3600000 to get hours
       const timeBetween = Math.abs(lastLogin - currentDate) / 3600000;
 
       if (timeBetween > endOfNextDay) {
-        StreakService.loseStreak(db, id);
-        StreakService.updateLastStreakDate(db, id, currentDate);
+        await StreakService.loseStreak(db, id);
+        await StreakService.updateLastStreakDate(db, id, currentDate);
         return res.status(201).json({
+          lastLogin,
           message:
             "Looks like you took a day or more off. Your streak has been reset. Don't worry, though, today is a new start!",
         });
       }
 
-      return res.status(201).json({
-        message: `Consistency is key! You're doing great. Submit your writing within ${
-          timeBetween - endOfNextDay
-        } hours to keep your streak!`,
-      });
+      return res
+        .status(201)
+        .json({
+          lastLogin,
+          message: `Consistency is key! You're doing great. Submit your writing by end of the day ${lastLogin.getMonth()}/${
+            lastLogin.getDate() + 1
+          } to keep your streak!`,
+        });
     }
-    res.status(201).json({
-      message:
-        "Let's make today the start of a new habit! Earn your first streak!",
-    });
   }
   handleStreakCheck().catch(next);
 });

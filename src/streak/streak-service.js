@@ -18,7 +18,6 @@ const StreakService = {
     return db("iterateusers").where({ userid }).update({ streak: 0 });
   },
   updateLastStreakDate(db, userid, currentDate) {
-    console.log(currentDate);
     return db("iterateusers")
       .where({ userid })
       .update({ last_login: currentDate });
