@@ -19,7 +19,7 @@ iRouter
       .catch(next);
   })
   .post(dataParser, (req, res, next) => {
-    const { userid, title, content, wordcount } = req.body;
+    const { user_id, title, content, wordcount } = req.body;
     const id = uuid();
 
     if (!title) {
@@ -31,7 +31,7 @@ iRouter
       title: title,
       content: content,
       wordcount: wordcount,
-      userid: userid,
+      user_id: user_id,
     };
 
     console.log(newWork);
