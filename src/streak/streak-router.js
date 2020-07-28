@@ -48,6 +48,12 @@ streakRouter.post("/check", jsonBodyParser, (req, res, next) => {
   async function handleStreakCheck() {
     const lastLogin = await StreakService.getLastSteakDate(db, id);
     console.log(lastLogin);
+    if (!lastLogin) {
+      StreakService.updateLastStreakDate(db, id, currentDate);
+      return res.status(201).json({
+        message: "Welcome to Iterate! Start typing and earn your first streak!",
+      });
+    }
     if (lastLogin) {
       //one hour less than 24 to be generous to the user - rounding up from their last hour
       const endOfNextDayHours = Math.abs(lastLogin.getHours() - 23);
@@ -58,13 +64,12 @@ streakRouter.post("/check", jsonBodyParser, (req, res, next) => {
 
       if (timeBetween > endOfNextDay) {
         StreakService.loseStreak(db, id);
-        StreakService.setLastStreakDate(db, id, currentDate);
+        StreakService.updateLastStreakDate(db, id, currentDate);
         return res.status(201).json({
           message:
             "Looks like you took a day or more off. Your streak has been reset. Don't worry, though, today is a new start!",
         });
       }
-      StreakService.setLastStreakDate(db, id, currentDate);
 
       return res.status(201).json({
         message: `Consistency is key! You're doing great. Submit your writing within ${
