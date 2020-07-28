@@ -1,5 +1,7 @@
-const supertest = require('supertest');
-const { expect } = require('chai');
+process.env.NODE_ENV = "test";
 
-global.supertest = supertest;
+const { expect } = require("chai");
+const supertest = require("supertest");
+
 global.expect = expect;
+global.supertest = supertest;

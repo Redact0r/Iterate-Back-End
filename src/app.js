@@ -38,4 +38,8 @@ app.use(function errorMiddleWare(err, req, res, next) {
   next();
 });
 
+app.get("/", (req, res) => {
+  res.send("Hello world!");
+});
+
 module.exports = app;

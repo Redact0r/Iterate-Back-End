@@ -6,6 +6,5 @@ CREATE TABLE "iterateusers" (
   "nickname" TEXT NOT NULL,
   "date_created" TIMESTAMP NOT NULL DEFAULT now(),
   "streak" INTEGER NULL,
-  "last_login" TIMESTAMP NULL,
-  "streak_boolean" BOOLEAN NULL
+  "last_login" TIMESTAMP NULL
 );
