@@ -25,7 +25,7 @@ Future features will include:
 # Links
 
 You can find the live site here:
-https://project-blackburn-client.vercel.app/
+https://iterate-phi.vercel.app/
 
 The back end can be contacted through this api:
 https://arcane-savannah-42201.herokuapp.com/
