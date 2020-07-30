@@ -28,7 +28,7 @@ You can find the live site here:
 https://project-blackburn-client.vercel.app/
 
 The back end can be contacted through this api:
-https://lower-goose-32788.herokuapp.com/api
+https://arcane-savannah-42201.herokuapp.com/
 
 # How to use the API
 

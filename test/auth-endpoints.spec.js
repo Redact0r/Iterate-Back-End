@@ -2,6 +2,7 @@ const knex = require("knex");
 const app = require("../src/app");
 const helpers = require("./test-helpers");
 const supertest = require("supertest");
+const { TEST_DATABASE_URL } = require("../src/config");
 
 require("dotenv").config();
 
@@ -14,7 +15,7 @@ describe("Auth endpoints", function () {
   before("make knex instance", () => {
     db = knex({
       client: "pg",
-      connection: process.env.TEST_DATABASE_URL,
+      connection: TEST_DATABASE_URL,
     });
     app.set("db", db);
   });

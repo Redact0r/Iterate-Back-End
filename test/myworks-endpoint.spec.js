@@ -3,6 +3,7 @@ const helpers = require("./test-helpers");
 const supertest = require("supertest");
 const knex = require("knex");
 const { expect } = require("chai");
+const { TEST_DATABASE_URL } = require("../src/config");
 require("dotenv").config();
 
 describe("User Endpoints", function () {
@@ -15,7 +16,7 @@ describe("User Endpoints", function () {
   before("make knex instance", () => {
     db = knex({
       client: "pg",
-      connection: process.env.TEST_DATABASE_URL,
+      connection: TEST_DATABASE_URL,
     });
     app.set("db", db);
   });
@@ -28,8 +29,8 @@ describe("User Endpoints", function () {
 
   afterEach("cleanup", () => helpers.cleanTables(db));
 
-  describe("GET", () => {
-    it("gets all works given a userid", () => {
+  describe("My Works", () => {
+    it("GETs all works given a userid", () => {
       let id = testUser.userid;
       return supertest(app)
         .get(`/myworks?userid=${id}`)
@@ -65,6 +66,23 @@ describe("User Endpoints", function () {
       it("deletes a work given an id", () => {
         let id = "611eff82-1d2f-444c-9d12-db5d9608bff2";
         return supertest(app).delete(`/myworks/id/${id}`).expect(204);
+      });
+    });
+    describe("PATCH", () => {
+      it("edits a work given an id", () => {
+        let id = "611eff82-1d2f-444c-9d12-db5d9608bff2";
+        let updatedObj = {
+          title: "new title",
+          content: "new content",
+          wordcount: 2,
+        };
+        return supertest(app)
+          .patch(`myworks/id/${id}`)
+          .send(updatedObj)
+          .expect(201)
+          .then((res) => {
+            expect(res.ok);
+          });
       });
     });
   });
