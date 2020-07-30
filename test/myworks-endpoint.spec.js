@@ -69,20 +69,18 @@ describe("User Endpoints", function () {
       });
     });
     describe("PATCH", () => {
-      it("edits a work given an id", () => {
+      it("edits a work given an id", (done) => {
         let id = "611eff82-1d2f-444c-9d12-db5d9608bff2";
         let updatedObj = {
           title: "new title",
           content: "new content",
           wordcount: 2,
         };
-        return supertest(app)
-          .patch(`myworks/id/${id}`)
-          .send(updatedObj)
-          .expect(201)
-          .then((res) => {
-            expect(res.ok);
-          });
+
+        return (
+          supertest(app).patch(`myworks/id/${id}`).send(updatedObj).expect(201),
+          done()
+        );
       });
     });
   });
