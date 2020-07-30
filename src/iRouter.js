@@ -34,8 +34,6 @@ iRouter
       user_id: user_id,
     };
 
-    console.log(newWork);
-
     iService
       .insertWork(req.app.get("db"), newWork)
       .then((work) => {
@@ -43,17 +41,6 @@ iRouter
       })
       .catch(next);
   });
-
-iRouter.route("/myworks/title/:searchtitle").get((req, res, next) => {
-  const { searchtitle } = req.params;
-  let worksByTitle = data.find((work) =>
-    work.title.toLowerCase().includes(searchtitle.toLowerCase())
-  );
-  if (!worksByTitle) {
-    return res.status(404).json({ err: "Not found" });
-  }
-  res.status(202).json(worksByTitle);
-});
 
 iRouter
   .route("/myworks/id/:id")
@@ -64,11 +51,11 @@ iRouter
       .then(() => res.status(204).end())
       .catch(next);
   })
-  .patch(dataParser, (req, res, next) => {
+  .patch(dataParser, async (req, res, next) => {
     const { id } = req.params;
     const { title, content, wordcount } = req.body;
     const updatedObj = { title: title, content: content, wordcount: wordcount };
-    iService
+    await iService
       .updateWork(req.app.get("db"), id, updatedObj)
       .then(() => res.status(201).end())
       .catch(next);
