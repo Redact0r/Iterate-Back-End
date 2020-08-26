@@ -1,10 +1,22 @@
 # Application
 
-Iterate - Back End
+Iterate
 
 # Developer
 
 Tyler Sharp
+
+# Links
+
+You can find the live site here:
+https://iterate-phi.vercel.app/
+
+The back end can be contacted through this api:
+https://arcane-savannah-42201.herokuapp.com/
+
+Client Repo: https://github.com/Redact0r/Iterate-Front-End/
+
+Server Repo: https://github.com/Redact0r/Iterate-Back-End/
 
 # Summary
 
@@ -21,14 +33,6 @@ Future features will include:
 2. More styling options.
 3. Pomodoro timer
 4. Leaderboards and "multiplayer" writing competitions
-
-# Links
-
-You can find the live site here:
-https://iterate-phi.vercel.app/
-
-The back end can be contacted through this api:
-https://arcane-savannah-42201.herokuapp.com/
 
 # How to use the API
 
@@ -63,9 +67,9 @@ POST "/streak/check" requires a {userid} in the req body and adds a new streak. 
 
 # Screen shots
 
-<img src="./src/Assets/iteratesnapshot1.png" width="500">
-<img src="./src/Assets/iteratesnapshot2.png" width="500">
-<img src="./src/Assets/iteratesnapshot3.png" width="500">
+<img src="https://raw.githubusercontent.com/Redact0r/Iterate-Front-End/master/src/Assets/Screenshots/iteratesnapshot1.PNG" width="500">
+<img src="https://raw.githubusercontent.com/Redact0r/Iterate-Front-End/master/src/Assets/Screenshots/iteratesnapshot2.PNG" width="500">
+<img src="https://raw.githubusercontent.com/Redact0r/Iterate-Front-End/master/src/Assets/Screenshots/iteratesnapshot3.PNG" width="500">
 
 # Technologies used
 
