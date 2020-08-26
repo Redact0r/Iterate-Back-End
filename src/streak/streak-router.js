@@ -47,7 +47,7 @@ streakRouter.post("/check", jsonBodyParser, (req, res, next) => {
 
   async function handleStreakCheck() {
     const lastLogin = await StreakService.getLastSteakDate(db, id);
-    const streakCheck = await getStreakByUserId(db, userid);
+    const streakCheck = await StreakService.getStreakByUserId(db, userid);
     if (!lastLogin || streakCheck === 0) {
       await StreakService.updateLastStreakDate(db, id, currentDate);
       return res.status(201).json({
