@@ -47,10 +47,10 @@ streakRouter.post("/check", jsonBodyParser, (req, res, next) => {
 
   async function handleStreakCheck() {
     const lastLogin = await StreakService.getLastSteakDate(db, id);
-    if (!lastLogin) {
+    if (!lastLogin || lastLogin === 0) {
       await StreakService.updateLastStreakDate(db, id, currentDate);
       return res.status(201).json({
-        message: "Welcome to Iterate! Start typing and earn your first streak!",
+        message: "Welcome to Iterate! Write today and earn a new streak!",
       });
     }
     if (lastLogin) {
