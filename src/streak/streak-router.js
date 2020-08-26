@@ -71,14 +71,12 @@ streakRouter.post("/check", jsonBodyParser, (req, res, next) => {
         });
       }
 
-      return res
-        .status(201)
-        .json({
-          lastLogin,
-          message: `Consistency is key! You're doing great. Submit your writing by end of the day ${lastLogin.getMonth()}/${
-            lastLogin.getDate() + 1
-          } to keep your streak!`,
-        });
+      return res.status(201).json({
+        lastLogin,
+        message: `Consistency is key! You're doing great. Submit your writing by end of the day ${
+          lastLogin.getMonth() + 1
+        }/${lastLogin.getDate() + 1} to keep your streak!`,
+      });
     }
   }
   handleStreakCheck().catch(next);
